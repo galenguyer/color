@@ -14,15 +14,14 @@
             }
             body {
                 width: 100%;
+                height: 100%;
                 padding: 0;
                 margin: 0;
                 background-color: rgb({{ r }}, {{ g }}, {{ b }});
             }
             #container {
-                width: 90%;
-                padding-top: 12px;
-                margin-left: auto;
-                margin-right: auto;
+                width: 100%;
+                height: 100%;
             }
             button {
                 padding: 8px 16px;
@@ -43,7 +42,28 @@
         <div id="container">
             <h1>Let's Make a Color!</h1>
 
-            <p>Current Color: rgb({{ r }}, {{ g }}, {{ b }})</p>
+            <p>Current Color: <span id="color">rgb({{ r }}, {{ g }}, {{ b }})</span></p>
+            <button onclick="submit('red')">Red</button>
+            <button onclick="submit('green')">Green</button>
+            <button onclick="submit('blue')">Blue</button>
+
+            <script>
+                function submit(color) {
+                    fetch(`/api/v1/${color}`, {
+                        method: "POST"
+                    })                    
+                    .then(response => response.json()) 
+                    .then(json => {
+                        t = json.red + json.green + json.blue;
+                        rp = Math.floor(json.red * 100 / t)
+                        gp = Math.floor(json.green * 100 / t)
+                        bp = Math.floor(json.blue * 100 / t)
+                        document.getElementById('color').innerText = `rgb(${rp}%, ${gp}%, ${bp}%)`;
+                        document.getElementsByTagName('body')[0].style.backgroundColor = `rgb(${rp}%, ${gp}%, ${bp}%)`;
+                    })
+                    .catch(err => console.log(err));
+                }
+            </script>
 
             {% if commit_hash %}
             <div class="git">

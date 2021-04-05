@@ -54,15 +54,30 @@
                     })                    
                     .then(response => response.json()) 
                     .then(json => {
-                        t = json.red + json.green + json.blue;
-                        rp = Math.floor(json.red * 100 / t)
-                        gp = Math.floor(json.green * 100 / t)
-                        bp = Math.floor(json.blue * 100 / t)
+                        let t = json.red + json.green + json.blue;
+                        let rp = Math.floor(json.red * 100 / t)
+                        let gp = Math.floor(json.green * 100 / t)
+                        let bp = Math.floor(json.blue * 100 / t)
                         document.getElementById('color').innerText = `rgb(${rp}%, ${gp}%, ${bp}%)`;
                         document.getElementsByTagName('body')[0].style.backgroundColor = `rgb(${rp}%, ${gp}%, ${bp}%)`;
+                        updateColors();
                     })
                     .catch(err => console.log(err));
                 }
+                function brightness(r, g, b) {
+                    return ((0.2126*r) + (0.7152*g) + (0.0722*b)); 
+                }
+                function updateColors() {
+                    let color = document.getElementById('color').innerText;
+                    let rgb = color.substring(4, color.length-1).replace(/ /g, '').replace(/%/g, '').split(',');
+                    let bright = brightness(parseInt(rgb[0]) * 255 / 100, parseInt(rgb[1]) * 255 / 100, parseInt(rgb[2]) * 255 / 100);
+                    if (bright < 128) {
+                        document.getElementsByTagName('body')[0].style.color = 'white';
+                    } else {
+                        document.getElementsByTagName('body')[0].style.color = 'black';
+                    }
+                }
+                updateColors();
             </script>
 
             {% if commit_hash %}

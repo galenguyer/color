@@ -11,4 +11,4 @@ ADD requirements.txt /app
 RUN pip install -r requirements.txt
 ADD . /app
 
-ENTRYPOINT ["gunicorn", "dr-ver:APP"]
+ENTRYPOINT ["gunicorn", "color:APP"]

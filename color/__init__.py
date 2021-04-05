@@ -45,10 +45,24 @@ def _send_favicon():
 
 @APP.route("/")
 def _index():
-    count = int(r.get("count").decode("UTF-8"))
-    clicks = 0
-    for key in r.scan_iter("clicks:*"):
-        clicks += int(r.get(key).decode("UTF-8"))
+    try: 
+        red = int(r.get("red").decode("UTF-8"))
+    except:
+        red = 0
+    try: 
+        green = int(r.get("green").decode("UTF-8"))
+    except:
+        green = 0
+    try: 
+        blue = int(r.get("blue").decode("UTF-8"))
+    except:
+        blue = 0
+    total = red + green + blue
+    if total == 0:
+        total = 1
+    r_percent = str(int(red * 100 / total)) + "%"
+    g_percent = str(int(green * 100 / total)) + "%"
+    b_percent = str(int(blue * 100 / total)) + "%"
     return render_template(
-        "index.html", commit_hash=commit_hash, count=count, clicks=clicks
+        "index.html", commit_hash=commit_hash, r=r_percent, g=g_percent, b=b_percent
     )

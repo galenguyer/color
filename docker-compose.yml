@@ -1,8 +1,8 @@
 version: "3.7"
 services:
-  dr-ver:
+  color:
     build: .
-    container_name: dr-ver
+    container_name: color
     restart: unless-stopped
     command:
       - "--bind=0.0.0.0:8080"

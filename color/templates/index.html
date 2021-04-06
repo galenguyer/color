@@ -9,8 +9,12 @@
             * {
                 font-family: Arial, Helvetica, sans-serif;
                 font-weight: 300;
+                font-size: 24px;
                 text-align: center;
                 box-sizing: border-box;
+            }
+            h1 {
+                font-size: 48px;
             }
             body {
                 width: 100%;
@@ -18,22 +22,32 @@
                 padding: 0;
                 margin: 0;
                 background-color: rgb({{ r }}, {{ g }}, {{ b }});
+                color: {{ tc }};
             }
             #container {
                 width: 100%;
-                height: 100%;
+                height: 80vh;
+                padding-top: 20vh;
             }
             button {
                 padding: 8px 16px;
-                border: 1.4px solid #bbbbbb;
+                border: 2px solid {{ tc }};
                 border-radius: 8px;
-                background-color: #f1f1f1;
+                background-color: rgb({{ r }}, {{ g }}, {{ b }});
+                color: {{ tc }};
             }
             button:hover {
                 background-color: #bbbbbb;
             }
             .git {
                 font-style: italic;
+                position:absolute;
+                bottom: 20px;
+                width:100%;
+                height:60px;
+            }
+            .git > p > a{
+                color: {{ tc }};
             }
         </style>
     </head>
@@ -54,30 +68,10 @@
                     })                    
                     .then(response => response.json()) 
                     .then(json => {
-                        let t = json.red + json.green + json.blue;
-                        let rp = Math.floor(json.red * 100 / t)
-                        let gp = Math.floor(json.green * 100 / t)
-                        let bp = Math.floor(json.blue * 100 / t)
-                        document.getElementById('color').innerText = `rgb(${rp}%, ${gp}%, ${bp}%)`;
-                        document.getElementsByTagName('body')[0].style.backgroundColor = `rgb(${rp}%, ${gp}%, ${bp}%)`;
-                        updateColors();
+                        location.reload();
                     })
                     .catch(err => console.log(err));
                 }
-                function brightness(r, g, b) {
-                    return ((0.2126*r) + (0.7152*g) + (0.0722*b)); 
-                }
-                function updateColors() {
-                    let color = document.getElementById('color').innerText;
-                    let rgb = color.substring(4, color.length-1).replace(/ /g, '').replace(/%/g, '').split(',');
-                    let bright = brightness(parseInt(rgb[0]) * 255 / 100, parseInt(rgb[1]) * 255 / 100, parseInt(rgb[2]) * 255 / 100);
-                    if (bright < 128) {
-                        document.getElementsByTagName('body')[0].style.color = 'white';
-                    } else {
-                        document.getElementsByTagName('body')[0].style.color = 'black';
-                    }
-                }
-                updateColors();
             </script>
 
             {% if commit_hash %}

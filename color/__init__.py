@@ -6,7 +6,15 @@ import random
 import string
 import itertools
 
-from flask import Flask, jsonify, request, render_template, redirect, abort
+from flask import (
+    Flask,
+    jsonify,
+    request,
+    render_template,
+    redirect,
+    abort,
+    send_from_directory,
+)
 import redis
 
 APP = Flask(__name__)
@@ -59,6 +67,22 @@ def get_rgb():
     return {"red": red, "green": green, "blue": blue}
 
 
+def brightness(red, green, blue, total):
+    return (
+        (0.2126 * red * 256 / total)
+        + (0.7152 * green * 256 / total)
+        + (0.0722 * blue * 256 / total)
+    )
+
+
+def get_text_color(red, green, blue, total):
+    return "black" if brightness(red, green, blue, total) >= 128 else "white"
+
+
+def get_button_color(red, green, blue, total):
+    return "white" if brightness(red, green, blue, total) >= 128 else "black"
+
+
 @APP.route("/")
 def _index():
     colors = get_rgb()
@@ -72,7 +96,13 @@ def _index():
     g_percent = str(int(green * 100 / total)) + "%"
     b_percent = str(int(blue * 100 / total)) + "%"
     return render_template(
-        "index.html", commit_hash=commit_hash, r=r_percent, g=g_percent, b=b_percent
+        "index.html",
+        commit_hash=commit_hash,
+        r=r_percent,
+        g=g_percent,
+        b=b_percent,
+        tc=get_text_color(red, green, blue, total),
+        bc=get_button_color(red, green, blue, total),
     )
 
 

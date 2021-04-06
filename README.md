@@ -1,2 +1,2 @@
-# dr-ver
-A simple link shortener, written with love
+# color
+Let's make a color!

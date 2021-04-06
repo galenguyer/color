@@ -101,6 +101,7 @@ def _index():
         g=g_percent,
         b=b_percent,
         tc=get_text_color(red, green, blue, total),
+        total=total,
         token=token,
     )
 

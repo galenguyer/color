@@ -5,6 +5,7 @@ import subprocess
 import random
 import string
 import itertools
+import secrets
 
 from flask import (
     Flask,
@@ -79,10 +80,6 @@ def get_text_color(red, green, blue, total):
     return "black" if brightness(red, green, blue, total) >= 128 else "white"
 
 
-def get_button_color(red, green, blue, total):
-    return "white" if brightness(red, green, blue, total) >= 128 else "black"
-
-
 @APP.route("/")
 def _index():
     colors = get_rgb()
@@ -95,6 +92,8 @@ def _index():
     r_percent = str(int(red * 100 / total)) + "%"
     g_percent = str(int(green * 100 / total)) + "%"
     b_percent = str(int(blue * 100 / total)) + "%"
+    token = "".join(secrets.token_hex(16))
+    r.set(f"token:{token}", "1")
     return render_template(
         "index.html",
         commit_hash=commit_hash,
@@ -102,23 +101,32 @@ def _index():
         g=g_percent,
         b=b_percent,
         tc=get_text_color(red, green, blue, total),
-        bc=get_button_color(red, green, blue, total),
+        token=token,
     )
 
 
 @APP.route("/api/v1/red", methods=["POST"])
 def _api_v1_red():
-    r.incr("red")
+    token = request.get_json(force=True)["token"]
+    if r.get(f"token:{token}") != None:
+        r.incr("red")
+        r.delete(f"token:{token}")
     return jsonify(get_rgb())
 
 
 @APP.route("/api/v1/green", methods=["POST"])
 def _api_v1_green():
-    r.incr("green")
+    token = request.get_json(force=True)["token"]
+    if r.get(f"token:{token}") != None:
+        r.incr("green")
+        r.delete(f"token:{token}")
     return jsonify(get_rgb())
 
 
 @APP.route("/api/v1/blue", methods=["POST"])
 def _api_v1_blue():
-    r.incr("blue")
+    token = request.get_json(force=True)["token"]
+    if r.get(f"token:{token}") != None:
+        r.incr("blue")
+        r.delete(f"token:{token}")
     return jsonify(get_rgb())

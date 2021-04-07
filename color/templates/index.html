@@ -63,10 +63,11 @@
             <button onclick="submit('blue')">Blue</button>
 
             <script>
+                var token = "null";
                 function submit(color) {
                     fetch(`/api/v1/${color}`, {
                         method: "POST",
-                        body: JSON.stringify({token: '{{ token }}'}),
+                        body: JSON.stringify({token: token}),
                         headers: {"Content-type": "application/json; charset=UTF-8"}
                     })                    
                     .then(response => response.json()) 
@@ -75,6 +76,9 @@
                     })
                     .catch(err => console.log(err));
                 }
+                document.body.addEventListener("mousemove", (event) => {
+                    token = "{{ token }}";
+                });
             </script>
 
             {% if commit_hash %}

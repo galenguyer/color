@@ -115,7 +115,7 @@ def _api_v1_red():
         - datetime.strptime(
             r.get(f"token:{token}").decode("UTF-8"), "%Y-%m-%d %H:%M:%S.%f"
         )
-    ) > timedelta(millseconds=500):
+    ) > timedelta(milliseconds=500):
         r.incr("red")
         r.delete(f"token:{token}")
     return jsonify(get_rgb())
@@ -129,7 +129,7 @@ def _api_v1_green():
         - datetime.strptime(
             r.get(f"token:{token}").decode("UTF-8"), "%Y-%m-%d %H:%M:%S.%f"
         )
-    ) > timedelta(millseconds=500):
+    ) > timedelta(milliseconds=500):
         r.incr("green")
         r.delete(f"token:{token}")
     return jsonify(get_rgb())
@@ -143,7 +143,7 @@ def _api_v1_blue():
         - datetime.strptime(
             r.get(f"token:{token}").decode("UTF-8"), "%Y-%m-%d %H:%M:%S.%f"
         )
-    ) > timedelta(millseconds=500):
+    ) > timedelta(milliseconds=500):
         r.incr("blue")
         r.delete(f"token:{token}")
     return jsonify(get_rgb())

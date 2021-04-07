@@ -6,6 +6,7 @@ import random
 import string
 import itertools
 import secrets
+from datetime import datetime, timedelta
 
 from flask import (
     Flask,
@@ -93,7 +94,7 @@ def _index():
     g_percent = str(int(green * 100 / total)) + "%"
     b_percent = str(int(blue * 100 / total)) + "%"
     token = "".join(secrets.token_hex(16))
-    r.set(f"token:{token}", "1")
+    r.set(f"token:{token}", f"{str(datetime.now())}")
     return render_template(
         "index.html",
         commit_hash=commit_hash,
@@ -109,7 +110,12 @@ def _index():
 @APP.route("/api/v1/red", methods=["POST"])
 def _api_v1_red():
     token = request.get_json(force=True)["token"]
-    if r.get(f"token:{token}") != None:
+    if (
+        datetime.now()
+        - datetime.strptime(
+            r.get(f"token:{token}").decode("UTF-8"), "%Y-%m-%d %H:%M:%S.%f"
+        )
+    ) > timedelta(millseconds=500):
         r.incr("red")
         r.delete(f"token:{token}")
     return jsonify(get_rgb())
@@ -118,7 +124,12 @@ def _api_v1_red():
 @APP.route("/api/v1/green", methods=["POST"])
 def _api_v1_green():
     token = request.get_json(force=True)["token"]
-    if r.get(f"token:{token}") != None:
+    if (
+        datetime.now()
+        - datetime.strptime(
+            r.get(f"token:{token}").decode("UTF-8"), "%Y-%m-%d %H:%M:%S.%f"
+        )
+    ) > timedelta(millseconds=500):
         r.incr("green")
         r.delete(f"token:{token}")
     return jsonify(get_rgb())
@@ -127,7 +138,12 @@ def _api_v1_green():
 @APP.route("/api/v1/blue", methods=["POST"])
 def _api_v1_blue():
     token = request.get_json(force=True)["token"]
-    if r.get(f"token:{token}") != None:
+    if (
+        datetime.now()
+        - datetime.strptime(
+            r.get(f"token:{token}").decode("UTF-8"), "%Y-%m-%d %H:%M:%S.%f"
+        )
+    ) > timedelta(millseconds=500):
         r.incr("blue")
         r.delete(f"token:{token}")
     return jsonify(get_rgb())

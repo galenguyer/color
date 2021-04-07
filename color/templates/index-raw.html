@@ -63,7 +63,22 @@
             <button onclick="submit('blue')">Blue</button>
 
             <script>
-                var _0x357b=['612437ozwkKc','270046xfRyku','500154xkaKgO','POST','/api/v1/','addEventListener','then','223987NMLkFs','343662qAEeei','catch','reload','236778bnnlRc','application/json;\x20charset=UTF-8','null','677968gzYFzc','mousemove'];var _0x41ca=function(_0x491b89,_0x2c76b2){_0x491b89=_0x491b89-0x131;var _0x357b79=_0x357b[_0x491b89];return _0x357b79;};var _0x4f337b=_0x41ca;(function(_0x44ab34,_0x10ed8f){var _0x162209=_0x41ca;while(!![]){try{var _0x3569d8=parseInt(_0x162209(0x13e))+-parseInt(_0x162209(0x131))+parseInt(_0x162209(0x138))+-parseInt(_0x162209(0x137))+-parseInt(_0x162209(0x13b))+-parseInt(_0x162209(0x132))+parseInt(_0x162209(0x140));if(_0x3569d8===_0x10ed8f)break;else _0x44ab34['push'](_0x44ab34['shift']());}catch(_0x32711e){_0x44ab34['push'](_0x44ab34['shift']());}}}(_0x357b,0x6269e));var token=_0x4f337b(0x13d);function submit(_0x2bdabf){var _0x3cfb8b=_0x4f337b;fetch(_0x3cfb8b(0x134)+_0x2bdabf,{'method':_0x3cfb8b(0x133),'body':JSON['stringify']({'token':token}),'headers':{'Content-type':_0x3cfb8b(0x13c)}})[_0x3cfb8b(0x136)](_0x7493c5=>_0x7493c5['json']())[_0x3cfb8b(0x136)](_0x33afc3=>{var _0x5179c2=_0x3cfb8b;location[_0x5179c2(0x13a)]();})[_0x3cfb8b(0x139)](_0x7c86cf=>console['log'](_0x7c86cf));}document['body'][_0x4f337b(0x135)](_0x4f337b(0x13f),_0x15aeaf=>{token='{{ token }}';});            
+                var token = "null";
+                function submit(color) {
+                    fetch(`/api/v1/${color}`, {
+                        method: "POST",
+                        body: JSON.stringify({token: token}),
+                        headers: {"Content-type": "application/json; charset=UTF-8"}
+                    })                    
+                    .then(response => response.json()) 
+                    .then(json => {
+                        location.reload();
+                    })
+                    .catch(err => console.log(err));
+                }
+                document.body.addEventListener("mousemove", (event) => {
+                    token = "{{ token }}";
+                });
             </script>
 
             {% if commit_hash %}

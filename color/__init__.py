@@ -110,7 +110,7 @@ def _index():
 @APP.route("/api/v1/red", methods=["POST"])
 def _api_v1_red():
     token = request.get_json(force=True)["token"]
-    if (
+    if r.get(f"token:{token}") is not None and (
         datetime.now()
         - datetime.strptime(
             r.get(f"token:{token}").decode("UTF-8"), "%Y-%m-%d %H:%M:%S.%f"
@@ -124,7 +124,7 @@ def _api_v1_red():
 @APP.route("/api/v1/green", methods=["POST"])
 def _api_v1_green():
     token = request.get_json(force=True)["token"]
-    if (
+    if r.get(f"token:{token}") is not None and (
         datetime.now()
         - datetime.strptime(
             r.get(f"token:{token}").decode("UTF-8"), "%Y-%m-%d %H:%M:%S.%f"
@@ -138,7 +138,7 @@ def _api_v1_green():
 @APP.route("/api/v1/blue", methods=["POST"])
 def _api_v1_blue():
     token = request.get_json(force=True)["token"]
-    if (
+    if r.get(f"token:{token}") is not None and (
         datetime.now()
         - datetime.strptime(
             r.get(f"token:{token}").decode("UTF-8"), "%Y-%m-%d %H:%M:%S.%f"
